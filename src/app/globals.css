@@ -1,4 +1,8 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  
+@tailwind components;
+@tailwind utilities;
+
+.centered-grid > * {
+  place-items: center end; /* Center horizontally and vertically align to bottom */
+  /* Add other styles for the children here (e.g., padding, margin) */
+}

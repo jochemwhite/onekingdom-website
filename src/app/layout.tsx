@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${roboto_mono.variable} ${inter.variable} ${assassin.variable} `}>
+      <body className={` ${roboto_mono.variable} ${inter.variable} ${assassin.variable} font-primary`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

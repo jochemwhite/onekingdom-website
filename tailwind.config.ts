@@ -15,15 +15,15 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.serif],
-        mono: ["var(--font-roboto-mono)"],
-        assassin: ["var(--font-assassin)" ],
+        primary: ["var(--font-inter)"],
+        title: ["var(--font-assassin)"],
       },
 
       colors: {
-        secondary: "#111111",
+        primary: "#111111",
+        secondary: "#0A0A0A",
+        accent: "#252525",
       },
-
 
       keyframes: {
         "accordion-down": {
