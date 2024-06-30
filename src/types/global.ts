@@ -34,3 +34,8 @@ export interface Event {
   published: boolean;
   author: string;
 }
+
+export interface Link {
+  name: string;
+  href: string;
+}

@@ -113,6 +113,34 @@ export const members: MemberProps[] = [
     patherdstreamer: false,
     staff: true,
   },
+  {
+    name: "Jochemwhite",
+    description: "Developer",
+    img: {
+      src: "/team/pokimane.jpg",
+      alt: "Pokimane",
+    },
+    socialMedia: [
+      { value: "twitter", href: "https://twitter.com/pokimane" },
+      { value: "discord", href: "https://discord.gg/pokimane" },
+    ],
+    patherdstreamer: false,
+    staff: true,
+  },
+  {
+    name: "Mjvp94",
+    description: "Discord Moderator",
+    img: {
+      src: "/team/pokimane.jpg",
+      alt: "Pokimane",
+    },
+    socialMedia: [
+      { value: "twitter", href: "https://twitter.com/pokimane" },
+      { value: "discord", href: "https://discord.gg/pokimane" },
+    ],
+    patherdstreamer: false,
+    staff: true,
+  },
 ];
 
 export const events: Event[] = [
@@ -146,4 +174,60 @@ export const events: Event[] = [
     shortDescription: "Short description",
     title: "Event 1",
   },
+];
+
+export const reviews = [
+  {
+    name: "Jack",
+    username: "@jack",
+    body: "I've never seen anything like this before. It's amazing. I love it.",
+    img: "https://avatar.vercel.sh/jack",
+  },
+  {
+    name: "Jill",
+    username: "@jill",
+    body: "I don't know what to say. I'm speechless. This is amazing.",
+    img: "https://avatar.vercel.sh/jill",
+  },
+  {
+    name: "John",
+    username: "@john",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/john",
+  },
+  {
+    name: "Jane",
+    username: "@jane",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/jane",
+  },
+  {
+    name: "Jenny",
+    username: "@jenny",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/jenny",
+  },
+  {
+    name: "James",
+    username: "@james",
+    body: "I'm at a loss for words. This is amazing. I love it.",
+    img: "https://avatar.vercel.sh/james",
+  },
+];
+
+
+// twitch scopes
+export const TWITCH_SCOPES = [
+  "openid",
+  "user:read:email",
+  "channel:read:editors",
+  "channel:manage:redemptions",
+  "channel:read:subscriptions",
+  "channel:read:vips",
+  "moderation:read",
+  "moderator:read:followers",
+  "user:read:chat",
+  "user:write:chat",
+  "user:bot",
+  "channel:bot",
 ];

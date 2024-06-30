@@ -2,6 +2,7 @@ import Header from "@/components/layout/header";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter, Roboto_Mono } from "next/font/google";
+import Footer from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "One Kingdom",
@@ -18,6 +19,7 @@ export default function Layout({
     <>
       <Header />
       {children}
+      <Footer />
     </>
   );
 }
