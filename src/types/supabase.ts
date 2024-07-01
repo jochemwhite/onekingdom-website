@@ -9,6 +9,70 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      socials: {
+        Row: {
+          href: string | null
+          id: number
+          team_member_id: number
+          value: string | null
+        }
+        Insert: {
+          href?: string | null
+          id?: number
+          team_member_id: number
+          value?: string | null
+        }
+        Update: {
+          href?: string | null
+          id?: number
+          team_member_id?: number
+          value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "socials_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_members: {
+        Row: {
+          description: string | null
+          id: number
+          name: string
+          object_id: string | null
+          patherdstreamer: boolean | null
+          staff: boolean | null
+        }
+        Insert: {
+          description?: string | null
+          id?: number
+          name: string
+          object_id?: string | null
+          patherdstreamer?: boolean | null
+          staff?: boolean | null
+        }
+        Update: {
+          description?: string | null
+          id?: number
+          name?: string
+          object_id?: string | null
+          patherdstreamer?: boolean | null
+          staff?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_object_id_fkey"
+            columns: ["object_id"]
+            isOneToOne: false
+            referencedRelation: "objects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           email: string | null

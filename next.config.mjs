@@ -2,7 +2,7 @@
 const nextConfig = {
   // add twitch domain to the list of allowed domains
   images: {
-    domains: ["static-cdn.jtvnw.net"],
+    domains: ["static-cdn.jtvnw.net", "yonhjhpjodqwntsqdecx.supabase.co"],
   },
 
   webpack(config) {

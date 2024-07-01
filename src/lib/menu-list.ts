@@ -1,11 +1,4 @@
-import {
-  Tag,
-  Users,
-  Settings,
-  Bookmark,
-  SquarePen,
-  LayoutGrid
-} from "lucide-react";
+import { Tag, Users, Settings, Bookmark, SquarePen, LayoutGrid } from "lucide-react";
 
 type Submenu = {
   href: string;
@@ -36,65 +29,54 @@ export function getMenuList(pathname: string): Group[] {
           label: "Dashboard",
           active: pathname.includes("/dashboard"),
           icon: LayoutGrid,
-          submenus: []
-        }
-      ]
+          submenus: [],
+        },
+      ],
     },
     {
-      groupLabel: "Contents",
+      groupLabel: "Blog",
       menus: [
         {
           href: "",
           label: "Posts",
           active: pathname.includes("/posts"),
           icon: SquarePen,
-          submenus: [
-            {
-              href: "/posts",
-              label: "All Posts",
-              active: pathname === "/posts"
-            },
-            {
-              href: "/posts/new",
-              label: "New Post",
-              active: pathname === "/posts/new"
-            }
-          ]
+          submenus: [],
         },
         {
           href: "/categories",
           label: "Categories",
           active: pathname.includes("/categories"),
           icon: Bookmark,
-          submenus: []
+          submenus: [],
         },
         {
           href: "/tags",
           label: "Tags",
           active: pathname.includes("/tags"),
           icon: Tag,
-          submenus: []
-        }
-      ]
+          submenus: [],
+        },
+      ],
     },
     {
-      groupLabel: "Settings",
+      groupLabel: "Team",
       menus: [
         {
-          href: "/users",
-          label: "Users",
-          active: pathname.includes("/users"),
+          href: "/dashboard/team",
+          label: "Team",
+          active: pathname.includes("/team"),
           icon: Users,
-          submenus: []
+          submenus: [],
         },
         {
           href: "/account",
-          label: "Account",
+          label: "Manage users",
           active: pathname.includes("/account"),
           icon: Settings,
-          submenus: []
-        }
-      ]
-    }
+          submenus: [],
+        },
+      ],
+    },
   ];
 }
