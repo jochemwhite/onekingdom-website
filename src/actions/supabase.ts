@@ -32,3 +32,48 @@ export async function getTeamMembers(): Promise<Database["public"]["Tables"]["te
 
   return data as Database["public"]["Tables"]["team_members"]["Row"][];
 }
+
+
+
+
+
+
+
+
+
+// ROLES
+export async function getRoles()  {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("role").select("*");
+
+  if (error) {
+    throw error;
+  }
+
+  
+  return data 
+}
+
+
+
+
+
+
+// Permissions
+export async function getPermissions() {
+  const session = await auth();
+  
+  const supabase = createClient(session?.supabaseAccessToken as string);
+  
+  const { data, error } = await supabase.from("role_permission").select("*").eq("role_id", 1);
+  
+  if (error) {
+    throw error;
+  }
+  console.log(data)
+
+  return data;
+}

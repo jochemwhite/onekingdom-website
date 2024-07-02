@@ -28,9 +28,9 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-import { TeamMemberTable as TeamMemberTableType } from "@/types/database";
+import { RoleTable as TRoletable  } from "@/types/database";
 import { useTeam } from "@/hooks/useTeam";
-import { TeamMemberColumns } from "./team-members-columns";
+import { RolesColums } from "./roles-columns";
 
 export type CommandColumn = {
   id: string;
@@ -46,13 +46,13 @@ export type CommandColumn = {
 };
 
 interface Props {
-  teamMembers : TeamMemberTableType["Row"][];
+  Roles : TRoletable["Row"][];
 }
 
-export function TeamMemberTable({ teamMembers }: Props) {
+export function RoleTable({ Roles }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([
     {
-      id: "command",
+      id: "name",
       desc: true,
     },
   ]);
@@ -64,11 +64,11 @@ export function TeamMemberTable({ teamMembers }: Props) {
     id: false,
   });
   const { createTeamMember, deleteTeamMember, getTeamMembers, updateTeamMember } = useTeam();
-  const [selectedRows, setSelectedRows] = React.useState<TeamMemberTableType["Row"][]>([]);
+  const [selectedRows, setSelectedRows] = React.useState<TRoletable["Row"][]>([]);
 
   const table = useReactTable({
-    data: teamMembers,
-    columns: TeamMemberColumns,
+    data: Roles,
+    columns: RolesColums,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -184,7 +184,7 @@ export function TeamMemberTable({ teamMembers }: Props) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={TeamMemberColumns.length} className="h-24 text-center">
+                <TableCell colSpan={RolesColums.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>

@@ -4,19 +4,13 @@ import TwitchProvider from "next-auth/providers/twitch";
 import { TWITCH_SCOPES } from "./lib/const";
 import { SupabaseAdapter } from "@auth/supabase-adapter";
 
-const {
-  TWITCH_CLIENT_SECRET,
-  NEXT_PUBLIC_TWITCH_CLIENT_ID,
-  SUPABASE_SERVICE_ROLE_KEY,
-  SUPABASE_URL,
-  SUPABASE_JWT_SECRET,
-} = env;
+
 
 export default {
   providers: [
     TwitchProvider({
-      clientId: NEXT_PUBLIC_TWITCH_CLIENT_ID,
-      clientSecret: TWITCH_CLIENT_SECRET,
+      clientId: env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+      clientSecret: env.TWITCH_CLIENT_SECRET,
       authorization: {
         params: {
           scope: TWITCH_SCOPES.join(" "),
@@ -26,7 +20,7 @@ export default {
   ],
 
   adapter: SupabaseAdapter({
-    url: SUPABASE_URL,
-    secret: SUPABASE_SERVICE_ROLE_KEY,
+    url: env.NEXT_PUBLIC_SUPABASE_URL,
+    secret: env.SUPABASE_SERVICE_ROLE_KEY,
   }),
 } satisfies NextAuthConfig;

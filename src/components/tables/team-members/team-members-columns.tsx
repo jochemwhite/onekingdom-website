@@ -62,6 +62,13 @@ export const TeamMemberColumns: ColumnDef<TeamMemberTable["Row"]>[] = [
       return <TruncatedText message={row.getValue("description")} />;
     },
   },
+  {
+    accessorKey: "published",
+    header: () => <div className="">Published</div>,
+    cell: ({ row }) => {
+      return <div className="pl-4">{row.getValue("published") ? "True" :  "False"}</div>
+    },
+  },
 
   {
     accessorKey: "updated_at",

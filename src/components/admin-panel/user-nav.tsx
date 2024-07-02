@@ -19,9 +19,10 @@ import { Database } from "@/types/supabase";
 
 interface UserNavProps {
   user: Database["public"]["Tables"]["users"]["Row"];
+  roles: string[];
 }
 
-export function UserNav({ user }: UserNavProps) {
+export function UserNav({ user, roles }: UserNavProps) {
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -44,7 +45,7 @@ export function UserNav({ user }: UserNavProps) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            <p className="text-xs leading-none text-muted-foreground">{roles.join(", ")}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

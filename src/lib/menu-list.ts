@@ -70,11 +70,22 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
-          href: "/account",
+          href: "$",
           label: "Manage users",
           active: pathname.includes("/account"),
           icon: Settings,
-          submenus: [],
+          submenus: [
+            {
+              href: "/account",
+              label: "Account",
+              active: pathname.includes("/account"),
+            },
+            {
+              href: "/dashboard/roles",
+              label: "Roles",
+              active: pathname.includes("/roles"),
+            },
+          ],
         },
       ],
     },

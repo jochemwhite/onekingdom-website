@@ -9,6 +9,96 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      img: {
+        Row: {
+          bucket_id: string | null
+          created_at: string
+          file_path: string | null
+          id: number
+        }
+        Insert: {
+          bucket_id?: string | null
+          created_at?: string
+          file_path?: string | null
+          id?: number
+        }
+        Update: {
+          bucket_id?: string | null
+          created_at?: string
+          file_path?: string | null
+          id?: number
+        }
+        Relationships: []
+      }
+      permission: {
+        Row: {
+          description: string | null
+          id: number
+          name: string | null
+          operation: string | null
+        }
+        Insert: {
+          description?: string | null
+          id?: number
+          name?: string | null
+          operation?: string | null
+        }
+        Update: {
+          description?: string | null
+          id?: number
+          name?: string | null
+          operation?: string | null
+        }
+        Relationships: []
+      }
+      role: {
+        Row: {
+          description: string | null
+          id: number
+          name: string | null
+        }
+        Insert: {
+          description?: string | null
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          description?: string | null
+          id?: number
+          name?: string | null
+        }
+        Relationships: []
+      }
+      role_permission: {
+        Row: {
+          permission_id: number
+          role_id: number
+        }
+        Insert: {
+          permission_id: number
+          role_id: number
+        }
+        Update: {
+          permission_id?: number
+          role_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permission_permission_id_fkey"
+            columns: ["permission_id"]
+            isOneToOne: false
+            referencedRelation: "permission"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_permission_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "role"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       socials: {
         Row: {
           href: string | null
@@ -40,35 +130,63 @@ export type Database = {
       }
       team_members: {
         Row: {
-          description: string | null
+          created_at: string
+          description: string
           id: number
+          img_url: string | null
           name: string
-          object_id: string | null
           patherdstreamer: boolean | null
+          published: boolean
           staff: boolean | null
         }
         Insert: {
-          description?: string | null
+          created_at?: string
+          description: string
           id?: number
+          img_url?: string | null
           name: string
-          object_id?: string | null
           patherdstreamer?: boolean | null
+          published?: boolean
           staff?: boolean | null
         }
         Update: {
-          description?: string | null
+          created_at?: string
+          description?: string
           id?: number
+          img_url?: string | null
           name?: string
-          object_id?: string | null
           patherdstreamer?: boolean | null
+          published?: boolean
           staff?: boolean | null
+        }
+        Relationships: []
+      }
+      user_role: {
+        Row: {
+          role_id: number
+          user_id: string
+        }
+        Insert: {
+          role_id: number
+          user_id: string
+        }
+        Update: {
+          role_id?: number
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "team_members_object_id_fkey"
-            columns: ["object_id"]
+            foreignKeyName: "user_role_role_id_fkey"
+            columns: ["role_id"]
             isOneToOne: false
-            referencedRelation: "objects"
+            referencedRelation: "role"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_role_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
