@@ -28,28 +28,17 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
-import { RoleTable as TRoletable, roles  } from "@/types/database";
+import { RoleTable as TRoletable, Users, roles  } from "@/types/database";
 import { useTeam } from "@/hooks/useTeam";
-import { RolesColums } from "./roles-columns";
+import { RolesColums } from "./users-columns";
 
-export type CommandColumn = {
-  id: string;
-  status: boolean;
-  command: string;
-  userlevel: string;
-  cooldown: string;
-  message: string;
-  action: string;
-  created_at: Date;
-  updated_at: Date;
-  updated_by: string;
-};
+
 
 interface Props {
-  Roles : roles[]
+  users : Users[]
 }
 
-export function RoleTable({ Roles }: Props) {
+export function UserTable({ users }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([
     {
       id: "name",
@@ -64,10 +53,10 @@ export function RoleTable({ Roles }: Props) {
     id: false,
   });
   const { createTeamMember, deleteTeamMember, getTeamMembers, updateTeamMember } = useTeam();
-  const [selectedRows, setSelectedRows] = React.useState<roles[]>([]);
+  const [selectedRows, setSelectedRows] = React.useState<Users[]>([]);
 
   const table = useReactTable({
-    data: Roles,
+    data: users,
     columns: RolesColums,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -134,7 +123,7 @@ export function RoleTable({ Roles }: Props) {
                     <p>Members to be deleted:</p>
                     <ul className="mt-2 list-disc list-outside ">
                       {table.getSelectedRowModel().rows.map((row) => (
-                        <li key={row.id}>{row.original.role_name}</li>
+                        <li key={row.id}>{row.original.name}</li>
                       ))}
                     </ul>
                   </AlertDialogDescription>

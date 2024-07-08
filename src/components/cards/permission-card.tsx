@@ -2,7 +2,7 @@ import { getPermissions } from '@/actions/supabase'
 import React from 'react'
 
 interface PermissionCardProps {
-  role_id: number
+  role_id: string
 }
 
 export default async function PermissionCard({ role_id}: PermissionCardProps) {

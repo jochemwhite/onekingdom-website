@@ -13,36 +13,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, user }) {
       const signingSecret = SUPABASE_JWT_SECRET;
 
+      const { data, error } = await supabaseAdmin
+        .from("userstoroles")
+        .select("roles(*)") // Select all columns from the 'role' table
+        .eq("userid", user.id); // Filter by user ID
+
+      if (error) {
+        console.error("Error fetching user roles:", error);
+        console.error(error);
+        return session;
+      }
+      
+
       const payload = {
         aud: "authenticated",
         exp: Math.floor(new Date(session.expires).getTime() / 1000),
         sub: user.id,
         email: user.email,
-        role: "authenticated",
+        roles: data.map((userstoroles) => userstoroles.roles!.id)
       };
+
+      console.log("payload", payload)
+
       session.supabaseAccessToken = jwt.sign(payload, signingSecret);
 
-      const { data, error } = await supabaseAdmin
-      .from('user_role')
-      .select('role(*)') // Select all columns from the 'role' table
-      .eq('user_id', user.id); // Filter by user ID
-
-      if (error) {
-        console.error(error);
-        return session;
+      if (data && data.length > 0) {
+        session.user.roles = data.map((userstoroles) => userstoroles.roles!.name);
       }
-
-      const roles = data.map((userRole) => userRole!.role!.name!) 
-
-      if(!roles){
-        session.user.roles = ['authenticated'];
-      }
-
-      session.user.roles = roles;
 
       return session;
     },
-
   },
 });
-

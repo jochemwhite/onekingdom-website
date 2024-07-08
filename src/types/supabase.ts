@@ -30,74 +30,80 @@ export type Database = {
         }
         Relationships: []
       }
-      permission: {
+      permissions: {
         Row: {
+          created_at: string
           description: string | null
-          id: number
-          name: string | null
-          operation: string | null
+          id: string
+          name: string
+          updated_at: string
         }
         Insert: {
+          created_at?: string
           description?: string | null
-          id?: number
-          name?: string | null
-          operation?: string | null
+          id?: string
+          name: string
+          updated_at?: string
         }
         Update: {
+          created_at?: string
           description?: string | null
-          id?: number
-          name?: string | null
-          operation?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }
-      role: {
+      rolepermissions: {
         Row: {
-          description: string | null
-          id: number
-          name: string | null
+          permission_id: string
+          role_id: string
         }
         Insert: {
-          description?: string | null
-          id?: number
-          name?: string | null
+          permission_id: string
+          role_id: string
         }
         Update: {
-          description?: string | null
-          id?: number
-          name?: string | null
-        }
-        Relationships: []
-      }
-      role_permission: {
-        Row: {
-          permission_id: number
-          role_id: number
-        }
-        Insert: {
-          permission_id: number
-          role_id: number
-        }
-        Update: {
-          permission_id?: number
-          role_id?: number
+          permission_id?: string
+          role_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "role_permission_permission_id_fkey"
+            foreignKeyName: "rolepermissions_permission_id_fkey"
             columns: ["permission_id"]
             isOneToOne: false
-            referencedRelation: "permission"
+            referencedRelation: "permissions"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "role_permission_role_id_fkey"
+            foreignKeyName: "rolepermissions_role_id_fkey"
             columns: ["role_id"]
             isOneToOne: false
-            referencedRelation: "role"
+            referencedRelation: "roles"
             referencedColumns: ["id"]
           },
         ]
+      }
+      roles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       socials: {
         Row: {
@@ -161,36 +167,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_role: {
-        Row: {
-          role_id: number
-          user_id: string
-        }
-        Insert: {
-          role_id: number
-          user_id: string
-        }
-        Update: {
-          role_id?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_role_role_id_fkey"
-            columns: ["role_id"]
-            isOneToOne: false
-            referencedRelation: "role"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_role_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       users: {
         Row: {
           email: string | null
@@ -215,6 +191,36 @@ export type Database = {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
             isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      userstoroles: {
+        Row: {
+          roleid: string
+          userid: string
+        }
+        Insert: {
+          roleid: string
+          userid: string
+        }
+        Update: {
+          roleid?: string
+          userid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "userstoroles_roleid_fkey"
+            columns: ["roleid"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "userstoroles_userid_fkey"
+            columns: ["userid"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

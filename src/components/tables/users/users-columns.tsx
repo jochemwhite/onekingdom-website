@@ -2,14 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-
 import TruncatedText from "@/components/ui/truncated-text";
-import { roles } from "@/types/database";
-import RoleActions from "./roles-actions";
+import { Users } from "@/types/database";
+import RoleActions from "./users-actions";
 
-export const RolesColums: ColumnDef<roles>[] = [
+export const RolesColums: ColumnDef<Users>[] = [
   {
-    accessorKey: "role_name",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -18,15 +17,15 @@ export const RolesColums: ColumnDef<roles>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="pl-4">{row.getValue("role_name")}</div>,
+    cell: ({ row }) => <div className="pl-4">{row.getValue("name")}</div>,
     enableHiding: true,
   },
 
   {
-    accessorKey: "permissions",
-    header: () => <div className="">permissions</div>,
+    accessorKey: "roles",
+    header: () => <div className="">Roles</div>,
     cell: ({ row }) => {
-      return <TruncatedText message={row.original.permissions.map((permissions) => permissions.permission_name).join(", ")} />;
+      return <TruncatedText message={row.original.roles.map((role) => role.name).join(", ")} />;
     },
   },
 
@@ -35,9 +34,8 @@ export const RolesColums: ColumnDef<roles>[] = [
     enableHiding: false,
     header: () => <div className="">Actions</div>,
     cell: ({ row }) => {
-      const command = row.original;
 
-      return <RoleActions Role={row.original} />;
+      return <RoleActions user={row.original} />;
     },
   },
 ];

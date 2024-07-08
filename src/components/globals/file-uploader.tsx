@@ -107,7 +107,7 @@ export function FileUploader(props: FileUploaderProps) {
   } = props;
 
   const [files, setFiles] = React.useState<File[]>([]);
-  const {data} = useSession();
+  const { data } = useSession();
 
   const supabase = createSupabaseClient(data?.supabaseAccessToken as string);
   const onDrop = React.useCallback(
@@ -174,19 +174,14 @@ export function FileUploader(props: FileUploaderProps) {
           });
 
           if (error) {
-            console.log(error)
+            console.log(error);
             throw error;
           }
 
           if (data) {
-            console.log(data)
+            console.log(data);
           }
-
         },
-
-      
-
-
 
         {
           loading: `Uploading ${target}...`,
