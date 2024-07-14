@@ -2,7 +2,7 @@
 
 import { TeamMemberSchema } from "@/schema/team-member-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -13,19 +13,21 @@ import { Socialmedia } from "@/types/global";
 import TeamMemberCard from "../cards/team-member-card";
 import { FileUploader } from "../globals/file-uploader";
 import Modal from "../globals/modal";
+import { useSearchParams } from "next/navigation";
+import { createTeamMember, getTeamMemberById, updateTeamMember } from "@/actions/supabase";
+import { toast } from "sonner";
 
 export default function TeamMemberForm() {
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const member_id = searchParams.get("member_id");
 
   const form = useForm<z.infer<typeof TeamMemberSchema>>({
     resolver: zodResolver(TeamMemberSchema),
     defaultValues: {
       name: "",
       description: "",
-      img: {
-        src: "",
-        alt: "",
-      },
+      img_url: "",
       socialMedia: [],
       patherdstreamer: false,
       staff: false,
@@ -61,11 +63,45 @@ export default function TeamMemberForm() {
     }
   };
 
-  function onSubmit(values: z.infer<typeof TeamMemberSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof TeamMemberSchema>) {
+    if (member_id) {
+      // handle update
+      toast.promise(updateTeamMember(values, member_id), {
+        loading: "Updating Team Member...",
+        success: "Team Member Updated",
+        error(error) {
+          return error.message;
+        },
+      });
+
+    } else {
+      // handle create
+      toast.promise(createTeamMember(values), {
+        loading: "Creating Team Member...",
+        success: "Team Member Created",
+        error(error) {
+          // console.log(data);
+          return error.message;
+        },
+      });
+    }
   }
+
+  useEffect(() => {
+    if (member_id) {
+      const fetchMember = async () => {
+        const teamMember = await getTeamMemberById(member_id);
+
+        form.setValue("name", teamMember.name);
+        form.setValue("description", teamMember.description);
+        form.setValue("img_url", teamMember.img_url);
+        // form.setValue("socialMedia", teamMember.);
+        form.setValue("patherdstreamer", teamMember.patherdstreamer);
+        form.setValue("staff", teamMember.staff);
+      };
+      fetchMember();
+    }
+  }, [member_id]);
 
   return (
     <div className="flex justify-between">
@@ -73,12 +109,7 @@ export default function TeamMemberForm() {
         {
           <Modal onClose={() => setModalOpen(false)} open={modalOpen}>
             <div className="mt-4">
-              <FileUploader
-                maxFiles={10}
-                onUpload={async (files) => {
-                  console.log(files);
-                }}
-              />
+              <FileUploader maxFiles={10} bucket_id="onekingdom-public" folder_name="team_members" />
             </div>
           </Modal>
         }

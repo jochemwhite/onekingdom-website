@@ -9,13 +9,13 @@ interface Props {
 }
 
 export default function TeamMemberCard({ member }: Props) {
-  const { name, description, img, socialMedia } = member;
+  const { name, description, img_url, socialMedia } = member;
 
   return (
     <div className="border-2 border-var(--extra-color) rounded-lg transition-all duration-300 ease">
       <div className="px-[40px] py-[40px] pt-[20px] text-center">
         <div className="w-full max-w-240 mx-auto mb-[26px]">
-          <Image src={img.src} alt={img.alt} width={320} height={320} className="w-full h-full object-cover rounded-full" />
+          <Image src={img_url} alt={member.name} width={320} height={320} className="w-full h-full object-cover rounded-full" />
         </div>
 
         <div className="w-full">

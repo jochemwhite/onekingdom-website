@@ -89,6 +89,9 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
    * @example disabled
    */
   disabled?: boolean;
+
+  bucket_id: string;
+  folder_name?: string;
 }
 
 export function FileUploader(props: FileUploaderProps) {
@@ -103,6 +106,8 @@ export function FileUploader(props: FileUploaderProps) {
     multiple = false,
     disabled = false,
     className,
+    bucket_id,
+    folder_name,
     ...dropzoneProps
   } = props;
 
@@ -168,18 +173,17 @@ export function FileUploader(props: FileUploaderProps) {
 
       toast.promise(
         async () => {
-          const { data, error } = await supabase.storage.from("onekingdom-public").upload("team_members", files[0], {
+          const { data, error } = await supabase.storage.from(bucket_id).upload(folder_name ? `${folder_name}/${files[0].name}` : files[0].name, files[0], {
             cacheControl: "3600",
             upsert: false,
           });
 
           if (error) {
-            console.log(error);
+            console.error(error);
             throw error;
           }
 
           if (data) {
-            console.log(data);
           }
         },
 

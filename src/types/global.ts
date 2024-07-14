@@ -12,7 +12,7 @@ export enum Socialmedia {
 export interface MemberProps {
   name: string;
   description: string;
-  img: Image
+  img_url: string
   socialMedia: { value: string; href: string }[];
   patherdstreamer: boolean;
   staff: boolean;

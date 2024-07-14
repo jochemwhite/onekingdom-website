@@ -52,7 +52,7 @@ interface Props {
 export function RoleTable({ Roles }: Props) {
   const [sorting, setSorting] = React.useState<SortingState>([
     {
-      id: "name",
+      id: "role_name",
       desc: true,
     },
   ]);
@@ -87,9 +87,9 @@ export function RoleTable({ Roles }: Props) {
     <div className="w-full">
       <div className="flex items-center py-4 justify-between">
         <Input
-          placeholder="Filter Members..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
+          placeholder="Filter Roles..."
+          value={(table.getColumn("role_name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) => table.getColumn("role_name")?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
         <div className="transition-all">

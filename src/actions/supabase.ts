@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { createClient } from "@/lib/supabase/server";
 import { Users, roles } from "@/types/database";
+import { MemberProps } from "@/types/global";
 import { Database } from "@/types/supabase";
 
 export async function getUser() {
@@ -10,16 +11,13 @@ export async function getUser() {
 
   const supabase = createClient(session?.supabaseAccessToken as string);
 
-  const { data, error } = await supabase.from("userstoroles").select("users(*), roles(*)")
+  const { data, error } = await supabase.from("user_roles").select("users(*), roles(*)");
 
   if (error) {
     throw error;
   }
 
-  
-
-
-  return data
+  return data;
 }
 
 // TEAM MEMBERS
@@ -29,8 +27,9 @@ export async function getTeamMembers(): Promise<Database["public"]["Tables"]["te
   const supabase = createClient(session?.supabaseAccessToken as string);
 
   const { data, error } = await supabase.from("team_members").select("*");
-  3;
+
   if (error) {
+    console.error("Error fetching team members:", error);
     throw error;
   }
 
@@ -44,19 +43,53 @@ export async function getRoles() {
   const supabase = createClient(session?.supabaseAccessToken as string);
 
   try {
-    const { data, error } = await supabase.from("rolepermissions").select("*, roles(name), permissions(name)");
+    const { data, error } = await supabase.from("role_permissions").select("*, roles(name), permissions(name)");
 
     if (error) {
       throw error;
     }
+
+    console.log("data", data);
 
     return data;
   } catch (error) {
     console.error("Error fetching roles and permissions:", error);
     return null;
   }
+}
+// get role by id
+export async function getRoleById(role_id: string) {
+  const session = await auth();
 
-  return;
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("role_permissions").select("*, roles(name), permissions(name)").eq("role_id", role_id);
+
+  if (error) {
+    throw error;
+  }
+
+  const rolesMap = new Map();
+
+  data.forEach((item) => {
+    const { role_id, roles, permission_id, permissions } = item;
+
+    if (!rolesMap.has(role_id)) {
+      rolesMap.set(role_id, {
+        role_id: role_id,
+        role_name: roles!.name,
+        permissions: [],
+      });
+    }
+    rolesMap.get(role_id).permissions.push({
+      permission_id: permission_id,
+      permission_name: permissions!.name,
+    });
+  });
+
+  const result: roles = Array.from(rolesMap.values())[0];
+
+  return result;
 }
 
 // Permissions
@@ -70,7 +103,6 @@ export async function getPermissions() {
   if (error) {
     throw error;
   }
-  // console.log(data);
 
   return data;
 }
@@ -93,9 +125,44 @@ export async function createRole(role: roles) {
     permission_id: permission.permission_id,
   }));
 
-  const { data: rolePermissionsRes, error: rolePermissionsError } = await supabase.from("rolepermissions").insert(rolePermissionsData);
+  const { data: rolePermissionsRes, error: rolePermissionsError } = await supabase.from("role_permissions").insert(rolePermissionsData);
 
   // return data;
+}
+
+// update role
+export async function updateRole(role: roles) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  // remove all the rows from the rolepermissions table
+  const {
+    data: rolePermissionsRes,
+    error: rolePermissionsError,
+    status,
+    statusText,
+  } = await supabase.from("role_permissions").delete().eq("role_id", role.role_id);
+
+  if (rolePermissionsError) {
+    console.error("rolePermissionsError", rolePermissionsError);
+    throw rolePermissionsError;
+  }
+
+  // add the role to the rolepermissions table
+  const rolePermissionsData = role.permissions.map((permission) => ({
+    role_id: role.role_id,
+    permission_id: permission.permission_id,
+  }));
+
+  const { data: rolePermissionsRes2, error: rolePermissionsError2 } = await supabase.from("role_permissions").insert(rolePermissionsData);
+
+  if (rolePermissionsError2) {
+    console.error("rolePermissionsError2", rolePermissionsError2);
+    throw rolePermissionsError2;
+  }
+
+  console.log("rolePermissionsRes2", rolePermissionsRes2);
 }
 
 // delete role
@@ -104,8 +171,7 @@ export async function deleteRole(role_id: string) {
 
   const supabase = createClient(session?.supabaseAccessToken as string);
   // remove all the rows from the rolepermissions table
-  const { data: rolePermissionsRes, error: rolePermissionsError } = await supabase.from("rolepermissions").delete().eq("role_id", role_id);
-
+  const { data: rolePermissionsRes, error: rolePermissionsError } = await supabase.from("role_permissions").delete().eq("role_id", role_id);
 
   if (rolePermissionsError) {
     throw rolePermissionsError;
@@ -119,7 +185,6 @@ export async function deleteRole(role_id: string) {
   return data;
 }
 
-
 // get all roles
 export async function getAllRoles() {
   const session = await auth();
@@ -127,6 +192,65 @@ export async function getAllRoles() {
   const supabase = createClient(session?.supabaseAccessToken as string);
 
   const { data, error } = await supabase.from("roles").select("*");
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+// fetch member based of member_id
+export async function getTeamMemberById(member_id: string) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("team_members").select("*").eq("id", member_id).single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+// create team member
+export async function createTeamMember(member: MemberProps) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+
+  // remove the socialMedia key from the object
+  const { socialMedia, ...memberData } = member;
+
+  const { data, error } = await supabase.from("team_members").insert([memberData]);
+
+  // const { data, error } = await supabase.from("team_members").insert([member]);
+
+  if (error) {
+    if (error.code === "23505") {
+      throw new Error(`Member ${member.name} already exists`);
+    }
+    throw error;
+  }
+
+  return data;
+}
+
+
+
+// update team member
+export async function updateTeamMember(member: MemberProps, member_id: string) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  // remove the socialMedia key from the object
+  const { socialMedia, ...memberData } = member;
+
+  const { data, error } = await supabase.from("team_members").update(memberData).eq("id", member_id);
 
   if (error) {
     throw error;

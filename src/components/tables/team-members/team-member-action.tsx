@@ -14,6 +14,7 @@ import { TeamMemberTable } from "@/types/database";
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface Props {
   team_member: TeamMemberTable["Row"];
@@ -36,7 +37,9 @@ export default function CommandActions({ team_member }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setModal(true)}>Edit Member</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href={`/dashboard/team/edit?member_id=${team_member.id}`}>Edit Member</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>Delete Member</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

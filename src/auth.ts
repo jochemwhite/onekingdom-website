@@ -14,9 +14,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const signingSecret = SUPABASE_JWT_SECRET;
 
       const { data, error } = await supabaseAdmin
-        .from("userstoroles")
+        .from("user_roles")
         .select("roles(*)") // Select all columns from the 'role' table
-        .eq("userid", user.id); // Filter by user ID
+        .eq("user_id", user.id); // Filter by user ID
 
       if (error) {
         console.error("Error fetching user roles:", error);
@@ -30,16 +30,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         exp: Math.floor(new Date(session.expires).getTime() / 1000),
         sub: user.id,
         email: user.email,
-        roles: data.map((userstoroles) => userstoroles.roles!.id)
+        roles: data.map((userstoroles) => userstoroles.roles!.name)
       };
 
-      console.log("payload", payload)
+
 
       session.supabaseAccessToken = jwt.sign(payload, signingSecret);
 
-      if (data && data.length > 0) {
-        session.user.roles = data.map((userstoroles) => userstoroles.roles!.name);
-      }
+      // if (data && data.length > 0) {
+      //   session.user.roles = data.map((userstoroles) => userstoroles.roles!.name);
+      // }
 
       return session;
     },

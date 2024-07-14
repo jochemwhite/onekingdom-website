@@ -14,10 +14,9 @@ export default function page() {
     async function fetchData() {
       const { data, error } = await supabase.from("users").select("*").single();
       if (error) {
-        console.log(error);
+        console.error(error);
         return;
       }
-      console.log(data);
     }
     fetchData();
   }, [X]);

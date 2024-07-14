@@ -9,52 +9,22 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      img: {
-        Row: {
-          bucket_id: string | null
-          created_at: string
-          file_path: string | null
-          id: number
-        }
-        Insert: {
-          bucket_id?: string | null
-          created_at?: string
-          file_path?: string | null
-          id?: number
-        }
-        Update: {
-          bucket_id?: string | null
-          created_at?: string
-          file_path?: string | null
-          id?: number
-        }
-        Relationships: []
-      }
       permissions: {
         Row: {
-          created_at: string
-          description: string | null
           id: string
           name: string
-          updated_at: string
         }
         Insert: {
-          created_at?: string
-          description?: string | null
           id?: string
           name: string
-          updated_at?: string
         }
         Update: {
-          created_at?: string
-          description?: string | null
           id?: string
           name?: string
-          updated_at?: string
         }
         Relationships: []
       }
-      rolepermissions: {
+      role_permissions: {
         Row: {
           permission_id: string
           role_id: string
@@ -69,14 +39,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "rolepermissions_permission_id_fkey"
+            foreignKeyName: "role_permissions_permission_id_fkey"
             columns: ["permission_id"]
             isOneToOne: false
             referencedRelation: "permissions"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "rolepermissions_role_id_fkey"
+            foreignKeyName: "role_permissions_role_id_fkey"
             columns: ["role_id"]
             isOneToOne: false
             referencedRelation: "roles"
@@ -86,42 +56,36 @@ export type Database = {
       }
       roles: {
         Row: {
-          created_at: string
           id: string
           name: string
-          updated_at: string
         }
         Insert: {
-          created_at?: string
           id?: string
           name: string
-          updated_at?: string
         }
         Update: {
-          created_at?: string
           id?: string
           name?: string
-          updated_at?: string
         }
         Relationships: []
       }
       socials: {
         Row: {
           href: string | null
-          id: number
-          team_member_id: number
+          id: string
+          team_member_id: string | null
           value: string | null
         }
         Insert: {
           href?: string | null
-          id?: number
-          team_member_id: number
+          id?: string
+          team_member_id?: string | null
           value?: string | null
         }
         Update: {
           href?: string | null
-          id?: number
-          team_member_id?: number
+          id?: string
+          team_member_id?: string | null
           value?: string | null
         }
         Relationships: [
@@ -138,34 +102,64 @@ export type Database = {
         Row: {
           created_at: string
           description: string
-          id: number
-          img_url: string | null
+          id: string
+          img_url: string
           name: string
-          patherdstreamer: boolean | null
+          patherdstreamer: boolean
           published: boolean
-          staff: boolean | null
+          staff: boolean
         }
         Insert: {
           created_at?: string
           description: string
-          id?: number
-          img_url?: string | null
+          id?: string
+          img_url: string
           name: string
-          patherdstreamer?: boolean | null
+          patherdstreamer: boolean
           published?: boolean
-          staff?: boolean | null
+          staff: boolean
         }
         Update: {
           created_at?: string
           description?: string
-          id?: number
-          img_url?: string | null
+          id?: string
+          img_url?: string
           name?: string
-          patherdstreamer?: boolean | null
+          patherdstreamer?: boolean
           published?: boolean
-          staff?: boolean | null
+          staff?: boolean
         }
         Relationships: []
+      }
+      user_roles: {
+        Row: {
+          role_id: string
+          user_id: string
+        }
+        Insert: {
+          role_id: string
+          user_id: string
+        }
+        Update: {
+          role_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
@@ -196,45 +190,46 @@ export type Database = {
           },
         ]
       }
-      userstoroles: {
-        Row: {
-          roleid: string
-          userid: string
-        }
-        Insert: {
-          roleid: string
-          userid: string
-        }
-        Update: {
-          roleid?: string
-          userid?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "userstoroles_roleid_fkey"
-            columns: ["roleid"]
-            isOneToOne: false
-            referencedRelation: "roles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "userstoroles_userid_fkey"
-            columns: ["userid"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      authorize:
+        | {
+            Args: {
+              requested_permission: Database["public"]["Enums"]["app_permission"]
+              user_id: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: {
+              requested_permission: string
+            }
+            Returns: boolean
+          }
+      haspermission: {
+        Args: {
+          required_permission: string
+        }
+        Returns: boolean
+      }
+      hasstoragepermission: {
+        Args: {
+          required_permission: string
+        }
+        Returns: boolean
+      }
+      retrievepermissions: {
+        Args: Record<PropertyKey, never>
+        Returns: string[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_permission: "channels.delete" | "messages.delete"
+      app_role: "admin" | "moderator"
+      user_status: "ONLINE" | "OFFLINE"
     }
     CompositeTypes: {
       [_ in never]: never

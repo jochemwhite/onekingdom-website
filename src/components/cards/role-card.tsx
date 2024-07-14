@@ -20,7 +20,6 @@ export default function RoleCard({ user }: RoleCardProps) {
 
   const handleChange = async (roles: string[]) => {
     // const response = await deleteRole(Role.role_id);
-    // console.log(response);
   };
 
   return (

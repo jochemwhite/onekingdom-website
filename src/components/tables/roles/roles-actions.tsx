@@ -17,14 +17,14 @@ import { RoleTable, TeamMemberTable, roles } from "@/types/database";
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface Props {
-  Role: roles
+  Role: roles;
 }
 
 export default function CommandActions({ Role }: Props) {
   const [modal, setModal] = React.useState<boolean>(false);
-
 
   const HandleDelete = async () => {
     toast.promise(deleteRole(Role.role_id), {
@@ -32,10 +32,7 @@ export default function CommandActions({ Role }: Props) {
       success: "Role deleted successfully",
       error: "Error deleting role",
     });
-  }
-
-
-
+  };
 
   return (
     <>
@@ -51,7 +48,9 @@ export default function CommandActions({ Role }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setModal(true)}>Edit Member</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href={`/dashboard/roles/edit?role_id=${Role.role_id}`}>Edit Role</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={HandleDelete}>Delete Role</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -60,7 +59,7 @@ export default function CommandActions({ Role }: Props) {
               toast.info("Command ID copied to clipboard");
             }}
           >
-            Copy Member ID
+            Copy Role ID
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

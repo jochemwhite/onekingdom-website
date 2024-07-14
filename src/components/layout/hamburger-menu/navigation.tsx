@@ -1,3 +1,4 @@
+'use client'
 import { Link as TLink } from "@/types/global";
 import { motion } from "framer-motion";
 import Link from "next/link";

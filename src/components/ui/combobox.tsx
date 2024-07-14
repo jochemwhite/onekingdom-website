@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import TruncatedText from "./truncated-text";
 
 interface ComboboxProps {
   items: { value: string; label: string }[];
@@ -32,9 +33,6 @@ export function Combobox({ items, placeholer, onChange, initialSelectedValues }:
     setSelectedValues(newSelectedValues);
   };
 
-
-
-
   React.useEffect(() => {
     onChange(selectedValues);
   }, [selectedValues]);
@@ -43,9 +41,11 @@ export function Combobox({ items, placeholer, onChange, initialSelectedValues }:
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
-          {selectedValues.length > 0
-            ? selectedValues.map((value) => items.find((item) => item.value === value)?.label).join(", ")
-            : placeholer}
+          {selectedValues.length > 0 ? (
+            <TruncatedText message={selectedValues.map((val) => items.find((item) => item.value === val)?.label).join(", ")} />
+          ) : (
+            placeholer
+          )}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

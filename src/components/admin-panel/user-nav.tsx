@@ -19,10 +19,11 @@ import { Database } from "@/types/supabase";
 
 interface UserNavProps {
   user: Database["public"]["Tables"]["users"]["Row"];
-  roles: string[];
+  roles?: string[];
 }
 
 export function UserNav({ user, roles }: UserNavProps) {
+
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -31,7 +32,7 @@ export function UserNav({ user, roles }: UserNavProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user.image!} alt="Avatar" />
+                  <AvatarImage src={user.image ? user.image : ""} alt="Avatar" />
                   <AvatarFallback className="bg-transparent">OK</AvatarFallback>
                 </Avatar>
               </Button>
@@ -45,7 +46,7 @@ export function UserNav({ user, roles }: UserNavProps) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">{roles.join(", ")}</p>
+            {/* <p className="text-xs leading-none text-muted-foreground">{roles.join(", ")}</p> */}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

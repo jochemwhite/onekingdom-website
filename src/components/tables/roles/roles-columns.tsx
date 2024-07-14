@@ -26,8 +26,13 @@ export const RolesColums: ColumnDef<roles>[] = [
     accessorKey: "permissions",
     header: () => <div className="">permissions</div>,
     cell: ({ row }) => {
-      return <TruncatedText message={row.original.permissions.map((permissions) => permissions.permission_name).join(", ")} />;
+      return (
+        <div className="max-w-[1000px]">
+          <TruncatedText message={row.original.permissions.map((permissions) => permissions.permission_name).join(", ")} />
+        </div>
+      );
     },
+    size: 500,
   },
 
   {

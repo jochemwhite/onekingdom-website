@@ -18,7 +18,6 @@ function useWindowDimensions() {
       return;
     }
 
-    // console.log(window.innerWidth, window.innerHeight);
     function handleResize() {
       // Set window width and height to state
       setWindowDimensions({

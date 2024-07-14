@@ -7,7 +7,7 @@ interface Props {
 
 export default function TruncatedText({ message }: Props) {
   const messageRef = useRef<HTMLDivElement>(null);
-  const [isTextTruncated, setIsTextTruncated] = useState<boolean>(false);
+  const [isTextTruncated, setIsTextTruncated] = useState<boolean>(true);
 
   useEffect(() => {
     const element = messageRef.current;

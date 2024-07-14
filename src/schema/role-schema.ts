@@ -9,5 +9,5 @@ const permissionSchema = z.object({
 export const RoleSchema = z.object({
   id: z.string(),
   name: z.string(),
-  permissions: z.array(permissionSchema),
+  permissions: z.array(permissionSchema).min(1, "At least one permission is required"),
 });

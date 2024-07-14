@@ -23,7 +23,9 @@ export async function Navbar({ title, user }: NavbarProps) {
         </div>
         <div className="flex flex-1 items-center space-x-2 justify-end">
           <ModeToggle />
-          <UserNav user={user} roles={user.roles.map((role) => role.name)} />
+          <UserNav user={user} 
+          // roles={user.roles.map((role) => role.name)}
+           />
         </div>
       </div>
     </header>

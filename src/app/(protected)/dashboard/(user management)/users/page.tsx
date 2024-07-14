@@ -29,7 +29,6 @@ export default async function page() {
 
   const usersArray: Users[] = Object.values(result);
 
-  console.log(usersArray);
 
   return (
     <div>

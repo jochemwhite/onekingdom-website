@@ -15,8 +15,8 @@ export default async function page() {
   
 
   return (
-    <div className="flex">
+ 
       <RoleForm permissions={arr} />
-    </div>
+    
   );
 }
