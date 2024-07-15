@@ -16,6 +16,7 @@ import Modal from "../globals/modal";
 import { useSearchParams } from "next/navigation";
 import { createTeamMember, getTeamMemberById, updateTeamMember } from "@/actions/supabase";
 import { toast } from "sonner";
+import FileVault from "../globals/file-vault";
 
 export default function TeamMemberForm() {
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -109,7 +110,10 @@ export default function TeamMemberForm() {
         {
           <Modal onClose={() => setModalOpen(false)} open={modalOpen}>
             <div className="mt-4">
+              <FileVault />
               <FileUploader maxFiles={10} bucket_id="onekingdom-public" folder_name="team_members" />
+              
+            
             </div>
           </Modal>
         }

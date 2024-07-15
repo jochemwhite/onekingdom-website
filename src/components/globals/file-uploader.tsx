@@ -169,24 +169,28 @@ export function FileUploader(props: FileUploaderProps) {
 
   const handleUpload = async () => {
     if (files && files.length > 0 && files.length <= maxFiles) {
-      const target = files.length > 0 ? `${files.length} files` : `file`;
+      const target = files.length > 1 ? `${files.length} files` : `file`;
 
-      toast.promise(
-        async () => {
-          const { data, error } = await supabase.storage.from(bucket_id).upload(folder_name ? `${folder_name}/${files[0].name}` : files[0].name, files[0], {
+      const uploadPromises = files.map(async (file) => {
+        const { data, error } = await supabase.storage
+          .from(bucket_id)
+          .upload(folder_name ? `${folder_name}/${file.name}` : file.name, file, {
             cacheControl: "3600",
             upsert: false,
           });
 
-          if (error) {
-            console.error(error);
-            throw error;
-          }
+        if (error) {
+          console.error(error);
+          throw error;
+        }
 
-          if (data) {
-          }
-        },
+        if (data) {
+          // Handle successful upload
+        }
+      });
 
+      toast.promise(
+        Promise.all(uploadPromises),
         {
           loading: `Uploading ${target}...`,
           success: () => {

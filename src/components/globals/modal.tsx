@@ -18,7 +18,7 @@ export default function Modal({ children, open, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black opacity-25" onClick={onClose} />
+      <div className="fixed inset-0 bg-black opacity-50" onClick={onClose} />
       <div className=" z-50 bg-primary  w-1/2 h-fit p-8 ">
         <div className="flex justify-between ">
           <h4>Select Image</h4>

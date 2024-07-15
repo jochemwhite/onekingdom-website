@@ -37,6 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       session.supabaseAccessToken = jwt.sign(payload, signingSecret);
 
+
       // if (data && data.length > 0) {
       //   session.user.roles = data.map((userstoroles) => userstoroles.roles!.name);
       // }

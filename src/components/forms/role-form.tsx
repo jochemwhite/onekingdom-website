@@ -72,7 +72,7 @@ export default function RoleForm({ permissions }: RoleFormProps) {
       permissions: values.permissions,
     };
 
-    console.log(obj);
+    // console.log(obj);
 
     if (role_id) {
       toast.promise(updateRole(obj), {
