@@ -1,4 +1,4 @@
-import { Tag, Users, Settings, Bookmark, SquarePen, LayoutGrid } from "lucide-react";
+import { Tag, Users, Settings, Bookmark, SquarePen, LayoutGrid, BusFront } from "lucide-react";
 
 type Submenu = {
   href: string;
@@ -27,40 +27,14 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "/dashboard",
           label: "Dashboard",
-          active: pathname.includes("/dashboard"),
+          active: pathname.endsWith("/dashboard"),
           icon: LayoutGrid,
           submenus: [],
         },
       ],
     },
     {
-      groupLabel: "Blog",
-      menus: [
-        {
-          href: "",
-          label: "Posts",
-          active: pathname.includes("/posts"),
-          icon: SquarePen,
-          submenus: [],
-        },
-        {
-          href: "/categories",
-          label: "Categories",
-          active: pathname.includes("/categories"),
-          icon: Bookmark,
-          submenus: [],
-        },
-        {
-          href: "/tags",
-          label: "Tags",
-          active: pathname.includes("/tags"),
-          icon: Tag,
-          submenus: [],
-        },
-      ],
-    },
-    {
-      groupLabel: "Team",
+      groupLabel: "CMS",
       menus: [
         {
           href: "/dashboard/team",
@@ -69,6 +43,47 @@ export function getMenuList(pathname: string): Group[] {
           icon: Users,
           submenus: [],
         },
+        {
+          href: "dashboard",
+          label: "Roadmaps",
+          active: pathname.endsWith("/dashboard/roadmaps"),
+          icon: BusFront,
+          submenus: [
+            {
+              href: "/dashboard/roadmaps",
+              label: "Posts",
+              active: pathname.endsWith("/roadmaps"),
+            }, 
+            {
+              href: "/dashboard/roadmaps/edit",
+              label: "New",
+              active: pathname.includes("/roadmaps/edit"),
+            },
+          ],
+        },
+        {
+          href: "",
+          label: "Posts",
+          active: pathname.includes("/posts"),
+          icon: SquarePen,
+          submenus: [
+            {
+              href: "/categories",
+              label: "Categories",
+              active: pathname.includes("/categories"),
+            },
+            {
+              href: "/tags",
+              label: "Tags",
+              active: pathname.includes("/tags"),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      groupLabel: "Management",
+      menus: [
         {
           href: "#",
           label: "Manage users",

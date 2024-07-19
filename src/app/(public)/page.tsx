@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import BasicButton from "@/components/buttons/basic-button";
 import NewsCard from "@/components/cards/news-card";
 import TestimonialCard from "@/components/cards/testimonial-card";
@@ -9,8 +10,26 @@ import Hero from "@/components/sections/hero";
 import TeamGrid from "@/components/sections/team-grid";
 import DiscordWidget from "@/components/widgets/discord-widget";
 import { reviews } from "@/lib/const";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data: members, error } = await supabase.from("team_members").select("*, socialMedia(*)").eq("published", true);
+  const {data: roadmap, error: roadmapError} = await supabase.from("roadmap_blog").select("*").eq("published", true).order("date", { ascending: false });
+
+  if (error) {
+    throw error;
+  }
+
+  if (roadmapError) {
+    throw roadmapError;
+  }
+
+  console.log(roadmap);
+  
+
   return (
     <main className="bg-primary ">
       {/* Hero section */}
@@ -44,7 +63,7 @@ export default function Home() {
           <Title title="Our Partnerd Streamers" />
         </div>
 
-        <TeamGrid title="Our Partnered Streamers" team="streamers" />
+        <TeamGrid title="Our Partnered Streamers" team="streamers" members={members} />
       </section>
 
       {/* Events */}
@@ -55,7 +74,7 @@ export default function Home() {
           </div>
 
           <DividerContainer>
-            <EventTimeline />
+            <EventTimeline events={roadmap} />
           </DividerContainer>
         </div>
       </section>
@@ -65,7 +84,7 @@ export default function Home() {
         <div className="mb-20">
           <Title title="Our Staff Team" />
         </div>
-        <TeamGrid title="Our Partnered Streamers" team="staff" />
+        <TeamGrid title="Our Partnered Streamers" team="staff" members={members} />
       </section>
 
       {/* News */}
@@ -109,7 +128,7 @@ export default function Home() {
               <TestimonialCard key={review.username} {...review} />
             ))}
           </Marquee>
-          <Marquee pauseOnHover  className="[--duration:20s]">
+          <Marquee pauseOnHover className="[--duration:20s]">
             {reviews.map((review) => (
               <TestimonialCard key={review.username} {...review} />
             ))}

@@ -27,10 +27,10 @@ export interface Image {
 export interface Event {
   title: string;
   eventDate: string;
-  Location: string;
+  location: string;
   description: string;
   shortDescription: string;
-  Images: Image[];
+  images: Image[];
   published: boolean;
   author: string;
 }

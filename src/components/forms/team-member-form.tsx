@@ -13,15 +13,17 @@ import { Socialmedia } from "@/types/global";
 import TeamMemberCard from "../cards/team-member-card";
 import { FileUploader } from "../globals/file-uploader";
 import Modal from "../globals/modal";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createTeamMember, getTeamMemberById, updateTeamMember } from "@/actions/supabase";
 import { toast } from "sonner";
 import FileVault from "../globals/file-vault";
+import { Switch } from "../ui/switch";
 
 export default function TeamMemberForm() {
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const searchParams = useSearchParams();
   const member_id = searchParams.get("member_id");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof TeamMemberSchema>>({
     resolver: zodResolver(TeamMemberSchema),
@@ -32,6 +34,7 @@ export default function TeamMemberForm() {
       socialMedia: [],
       patherdstreamer: false,
       staff: false,
+      published: false,
     },
   });
 
@@ -74,12 +77,14 @@ export default function TeamMemberForm() {
           return error.message;
         },
       });
-
     } else {
       // handle create
       toast.promise(createTeamMember(values), {
         loading: "Creating Team Member...",
-        success: "Team Member Created",
+        success(data) {
+          router.push("/dashboard/team/edit?member_id=" + data.id);
+          return "Team Member Created";
+        },
         error(error) {
           // console.log(data);
           return error.message;
@@ -88,15 +93,20 @@ export default function TeamMemberForm() {
     }
   }
 
+  const handleImages = (files: string[]) => {
+    const file = files[0];
+    form.setValue("img_url", file);
+  };
+
   useEffect(() => {
     if (member_id) {
       const fetchMember = async () => {
         const teamMember = await getTeamMemberById(member_id);
 
         form.setValue("name", teamMember.name);
-        form.setValue("description", teamMember.description);
+        form.setValue("description", teamMember.description!);
         form.setValue("img_url", teamMember.img_url);
-        // form.setValue("socialMedia", teamMember.);
+        form.setValue("socialMedia", teamMember.socialMedia);
         form.setValue("patherdstreamer", teamMember.patherdstreamer);
         form.setValue("staff", teamMember.staff);
       };
@@ -110,10 +120,8 @@ export default function TeamMemberForm() {
         {
           <Modal onClose={() => setModalOpen(false)} open={modalOpen}>
             <div className="mt-4">
-              <FileVault />
-              <FileUploader maxFiles={10} bucket_id="onekingdom-public" folder_name="team_members" />
-              
-            
+              <FileVault onSelectedFilesChange={handleImages} bucket_id="onekingdom-public" folder_name="team_members" />
+              {/* <FileUploader maxFiles={10} bucket_id="onekingdom-public" folder_name="team_members" /> */}
             </div>
           </Modal>
         }
@@ -177,6 +185,48 @@ export default function TeamMemberForm() {
             )}
           />
 
+          <div className="flex space-x-4">
+            <FormField
+              control={form.control}
+              name="patherdstreamer"
+              render={({ field }) => (
+                <FormItem className="flex items-center flex-col">
+                  <FormLabel>OneKingdom Streamer</FormLabel>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="staff"
+              render={({ field }) => (
+                <FormItem className="flex items-center flex-col">
+                  <FormLabel>OneKingdom Staff</FormLabel>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="published"
+              render={({ field }) => (
+                <FormItem className="flex items-center flex-col">
+                  <FormLabel>Published</FormLabel>
+                  <FormControl>
+                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <Button type="button" variant="outline" onClick={() => setModalOpen(true)}>
             Select Image
           </Button>
@@ -186,7 +236,7 @@ export default function TeamMemberForm() {
           </Button>
         </form>
       </Form>
-      <div className="w-1/2">
+      <div className="w-1/2 h-96">
         <TeamMemberCard member={form.watch()} />
       </div>
     </div>

@@ -180,7 +180,7 @@ export function FileUploader(props: FileUploaderProps) {
           });
 
         if (error) {
-          console.error(error);
+          console.log(error);
           throw error;
         }
 

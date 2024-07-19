@@ -1,13 +1,18 @@
 "use client";
 import Divider from "@/components/svg/Divider.svg";
-import { events } from "@/lib/const";
 import { useState } from "react";
 import { Controller } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import EventTimelineCard from "./EventTimelineCard";
 import EventTimelineNav from "./EventTimelineNav";
+import { Event } from "@/types/global";
+import { Database } from "@/types/supabase";
 
-export default function EventTimeline() {
+interface Props {
+  events: Database["public"]["Tables"]["roadmap_blog"]["Row"][]
+}
+
+export default function EventTimeline({ events }: Props) {
   const [active, setActive] = useState(1);
 
   return (

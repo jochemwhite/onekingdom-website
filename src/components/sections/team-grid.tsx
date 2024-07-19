@@ -1,13 +1,19 @@
-import { members } from "@/lib/const";
 import React from "react";
 import TeamMemberCard from "../cards/team-member-card";
+import { auth } from "@/auth";
+import { createClient } from "@/lib/supabase/server";
+import { MemberProps } from "@/types/global";
 
 interface TeamGridProps {
   title: string;
   team: "streamers" | "staff" | "all";
+  members: MemberProps[];
 }
 
-export default function TeamGrid({ title, team }: TeamGridProps) {
+export default async function TeamGrid({ title, team, members }: TeamGridProps) {
+
+
+
   return (
     <div className="flex flex-wrap justify-center ">
       {members.map((member, index) => {

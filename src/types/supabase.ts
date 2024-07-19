@@ -24,6 +24,48 @@ export type Database = {
         }
         Relationships: []
       }
+      roadmap_blog: {
+        Row: {
+          author: string
+          content: Json
+          created_at: string
+          date: string
+          id: string
+          images: string[]
+          location: string | null
+          published: boolean
+          short_description: string
+          slug: string | null
+          title: string
+        }
+        Insert: {
+          author: string
+          content: Json
+          created_at?: string
+          date: string
+          id?: string
+          images: string[]
+          location?: string | null
+          published?: boolean
+          short_description: string
+          slug?: string | null
+          title: string
+        }
+        Update: {
+          author?: string
+          content?: Json
+          created_at?: string
+          date?: string
+          id?: string
+          images?: string[]
+          location?: string | null
+          published?: boolean
+          short_description?: string
+          slug?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       role_permissions: {
         Row: {
           permission_id: string
@@ -69,29 +111,29 @@ export type Database = {
         }
         Relationships: []
       }
-      socials: {
+      socialMedia: {
         Row: {
-          href: string | null
+          href: string
           id: string
-          team_member_id: string | null
-          value: string | null
+          member_id: string | null
+          value: string
         }
         Insert: {
-          href?: string | null
+          href: string
           id?: string
-          team_member_id?: string | null
-          value?: string | null
+          member_id?: string | null
+          value: string
         }
         Update: {
-          href?: string | null
+          href?: string
           id?: string
-          team_member_id?: string | null
-          value?: string | null
+          member_id?: string | null
+          value?: string
         }
         Relationships: [
           {
-            foreignKeyName: "socials_team_member_id_fkey"
-            columns: ["team_member_id"]
+            foreignKeyName: "socialMedia_member_id_fkey"
+            columns: ["member_id"]
             isOneToOne: false
             referencedRelation: "team_members"
             referencedColumns: ["id"]

@@ -5,7 +5,6 @@ import type { MemberProps } from "@/types/global";
 
 interface Props {
   member: MemberProps;
-
 }
 
 export default function TeamMemberCard({ member }: Props) {
@@ -14,8 +13,8 @@ export default function TeamMemberCard({ member }: Props) {
   return (
     <div className="border-2 border-var(--extra-color) rounded-lg transition-all duration-300 ease">
       <div className="px-[40px] py-[40px] pt-[20px] text-center">
-        <div className="w-full max-w-240 mx-auto mb-[26px]">
-          <Image src={img_url} alt={member.name} width={320} height={320} className="w-full h-full object-cover rounded-full" />
+        <div className="w-full max-w-96 mx-auto mb-[26px] relative h-96">
+          <Image src={img_url} alt={member.name} fill className="w-full h-full object-cover rounded-full" />
         </div>
 
         <div className="w-full">

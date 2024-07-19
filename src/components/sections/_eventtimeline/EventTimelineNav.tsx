@@ -2,12 +2,12 @@
 import FadeIn from "@/components/Framer/FadeIn";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { cn } from "@/lib/utils";
-import { Event } from "@/types/global";
+import { Database } from "@/types/supabase";
 import "swiper/css";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 interface Props {
-  events: Event[];
+  events: Database["public"]["Tables"]["roadmap_blog"]["Row"][]
   active: number;
 }
 
@@ -58,7 +58,7 @@ export default function EventTimelineNav({ events, active }: Props) {
                               "text-[#ccc]": index === active,
                             })}
                           >
-                            {new Date(event.eventDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                            {new Date(event.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                           </span>
                           <span
                             className={cn("w-3 h-3 rounded-full block absolute bg-[#252525]  bottom-full left-1/2 -ml-[5px] -mb-[6px]", {

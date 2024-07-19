@@ -206,7 +206,7 @@ export async function getTeamMemberById(member_id: string) {
 
   const supabase = createClient(session?.supabaseAccessToken as string);
 
-  const { data, error } = await supabase.from("team_members").select("*").eq("id", member_id).single();
+  const { data, error } = await supabase.from("team_members").select("*, socialMedia(*)").eq("id", member_id).single();
 
   if (error) {
     throw error;
@@ -221,13 +221,10 @@ export async function createTeamMember(member: MemberProps) {
 
   const supabase = createClient(session?.supabaseAccessToken as string);
 
-
   // remove the socialMedia key from the object
   const { socialMedia, ...memberData } = member;
 
-  const { data, error } = await supabase.from("team_members").insert([memberData]);
-
-  // const { data, error } = await supabase.from("team_members").insert([member]);
+  const { data, error } = await supabase.from("team_members").insert([memberData]).select("id").single();
 
   if (error) {
     if (error.code === "23505") {
@@ -236,10 +233,22 @@ export async function createTeamMember(member: MemberProps) {
     throw error;
   }
 
+  // add socails
+  const socialMediaData = member.socialMedia.map((social) => ({
+    member_id: data.id,
+    value: social.value,
+    href: social.href,
+  }));
+
+  const { data: socialMediaRes, error: socialMediaError } = await supabase.from("socialMedia").insert(socialMediaData);
+
+  if (socialMediaError) {
+    console.log("socialMediaError", socialMediaError);
+    throw socialMediaError;
+  }
+
   return data;
 }
-
-
 
 // update team member
 export async function updateTeamMember(member: MemberProps, member_id: string) {
@@ -251,6 +260,83 @@ export async function updateTeamMember(member: MemberProps, member_id: string) {
   const { socialMedia, ...memberData } = member;
 
   const { data, error } = await supabase.from("team_members").update(memberData).eq("id", member_id);
+
+  if (error) {
+    throw error;
+  }
+
+  // remove all the social media
+  const { data: socialMediaRes, error: socialMediaError } = await supabase.from("socialMedia").delete().eq("member_id", member_id);
+
+  if (socialMediaError) {
+    throw socialMediaError;
+  }
+
+  // add socails
+  const socialMediaData = member.socialMedia.map((social) => ({
+    member_id: member_id,
+    value: social.value,
+    href: social.href,
+  }));
+
+  const { data: socialMediaRes2, error: socialMediaError2 } = await supabase.from("socialMedia").insert(socialMediaData);
+
+  return data;
+}
+
+// roadmaps
+export async function getRoadmaps() {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("roadmap_blog").select("*");
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+// get roadmap by id
+export async function getRoadmapById(roadmap_id: string) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("roadmap_blog").select("*").eq("id", roadmap_id).single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+
+export async function createRoadmap(roadmap: Database["public"]["Tables"]["roadmap_blog"]["Insert"]) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("roadmap_blog").insert(roadmap).select("id").single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+
+// update roadmap
+export async function updateRoadmap(roadmap: Database["public"]["Tables"]["roadmap_blog"]["Update"], roadmap_id: string) {
+  const session = await auth();
+
+  const supabase = createClient(session?.supabaseAccessToken as string);
+
+  const { data, error } = await supabase.from("roadmap_blog").update(roadmap).eq("id", roadmap_id);
 
   if (error) {
     throw error;

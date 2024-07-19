@@ -12,9 +12,10 @@ const imgSchema = z.object({
 
 export const TeamMemberSchema = z.object({
   name: z.string().min(3, { message: "Name must be at least 3 characters long" }),
-  description: z.string(),
+  description: z.string().max(20, { message: "Description must be less than 20 characters" }),
   img_url: string(),
   socialMedia: z.array(socialMediaSchema),
   patherdstreamer: z.boolean(),
   staff: z.boolean(),
+  published: z.boolean(),
 });
