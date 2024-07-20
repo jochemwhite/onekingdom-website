@@ -39,12 +39,12 @@ export function PlateEditor({ initialValue, onValueChange, readOnly }: PlateEdit
   return (
     <DndProvider backend={HTML5Backend}>
       <CommentsProvider users={{}} myUserId="1">
-        <Plate plugins={plugins} initialValue={value} onValueChange={setValue} readOnly={readOnly}>
+        <Plate plugins={plugins} initialValue={value} onValueChange={setValue} readOnly={readOnly} >
           <FixedToolbar>
             <FixedToolbarButtons />
           </FixedToolbar>
 
-          <Editor />
+          <Editor variant="ghost" />
 
           <FloatingToolbar>
             <FloatingToolbarButtons />
