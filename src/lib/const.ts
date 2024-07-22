@@ -215,6 +215,28 @@ export const reviews = [
   },
 ];
 
+export const socials = [
+  {
+    name: "twitter",
+    link: "https://twitter.com",
+  },
+  {
+    name: "facebook",
+    link: "https://facebook.com",
+  },
+  {
+    name: "instagram",
+    link: "https://instagram.com",
+  },
+  {
+    name: "youtube",
+    link: "https://youtube.com",
+  },
+  {
+    name: "twitch",
+    link: "https://twitch.com",
+  },
+];
 
 // twitch scopes
 export const TWITCH_SCOPES = [

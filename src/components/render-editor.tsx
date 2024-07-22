@@ -8,7 +8,7 @@ export default function RenderContent({ content }: { content: string }) {
 
   return (
     <Plate plugins={RenderPlugins} initialValue={JSON.parse(content)} readOnly >
-      <Editor className="!bg-transparent" variant="ghost"  />
+      <Editor className="!bg-transparent font-primary text-lg text-text-primary " variant="ghost"  />
 
     </Plate>
   );

@@ -1,6 +1,17 @@
 import { auth } from "@/auth";
+import BlogComments from "@/components/blog/blog-comments";
+import BlogSelector from "@/components/blog/blog-selector";
+import BreadCrumbs from "@/components/blog/breadcrumbs";
+import MiniItems from "@/components/blog/mini-items";
+import ArticleCard from "@/components/cards/article-card";
+import AuthorCard from "@/components/cards/author-card";
 import SocialIcon from "@/components/globals/social-icon";
+import SocialList from "@/components/globals/social-list";
+import SocialLlist from "@/components/globals/social-list";
+import Widget from "@/components/globals/widget";
 import RenderContent from "@/components/render-editor";
+import { Separator } from "@/components/ui/separator";
+import { socials } from "@/lib/const";
 import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,6 +36,31 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return notFound();
   }
 
+  // get the next and previous post
+  const { data: next_post, error: next_error } = await supabase
+    .from("roadmap_blog")
+    .select()
+    .lt("date", data.date)
+    .order("date", { ascending: false })
+    .eq("published", true)
+    .neq("content", null);
+
+  if (next_error) {
+    throw next_error;
+  }
+
+  const { data: prev_post, error: prev_error } = await supabase
+    .from("roadmap_blog")
+    .select()
+    .gt("date", data.date)
+    .order("date")
+    .eq("published", true)
+    .neq("content", null);
+
+  if (prev_error) {
+    throw prev_error;
+  }
+
   return (
     <section className="relative ">
       <div className="pt-[165px] container">
@@ -35,40 +71,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <span className="mr-5">
               <p>Share: </p>
             </span>
-            <ul className="flex items-center [&>li]:px-2 text-white">
-              <li>
-                <Link href="" target="_blank" className="hover:text-text-accent">
-                  <SocialIcon value="twitter" />
-                </Link>
-              </li>
-              <li>
-                <Link href="" target="_blank" className="hover:text-text-accent">
-                  <SocialIcon value="instagram" />
-                </Link>
-              </li>
-              <li>
-                <Link href="" target="_blank" className="hover:text-text-accent">
-                  <SocialIcon value="tiktok" />
-                </Link>
-              </li>
-              <li>
-                <Link href="" target="_blank" className="hover:text-text-accent">
-                  <SocialIcon value="twitch" />
-                </Link>
-              </li>
-            </ul>
+            <SocialList socails={socials} />
           </div>
-          <div className="text-lg flex">
-            <Link href="/" className="hover:text-text-accent">
-              <p>Home</p>
-            </Link>
-            <span className="mx-2">/</span>
-            <Link href="/roadmap" className="hover:text-text-accent">
-              <p>Roadmaps</p>
-            </Link>
-            <span className="mx-2">/</span>
-            <p>{data.title}</p>
-          </div>
+          <BreadCrumbs title={data.title} />
         </div>
         <div className="relative w-full h-[750px] rounded-lg overflow-hidden my-10">
           <Image
@@ -79,29 +84,57 @@ export default async function Page({ params }: { params: { slug: string } }) {
               objectFit: "cover",
               objectPosition: "center",
             }}
+            loading="eager"
+            priority
           />
         </div>
+        <div className="flex">
+          {/* content */}
+          <div className="w-full ">
+            <MiniItems date={data.date} author={data.author} />
 
-        <div className="flex space-x-6">
-          <div
-            className="relative list-none flex justify-center items-center bg-[#252525] py-1 min-h-10            
-            after:absolute   after:border-transparent after:border-l-[#252525] after:border-solid after:border-t-[40px] after:border-b-0 after:border-l-[12px]  after:left-full "
-          >
-            {data.date}
+            <h2 className="text-4xl font-medium font-blog-title">{data.title}</h2>
+
+            <RenderContent content={data.content as string} />
+
+            <AuthorCard
+              img={data.images[0]}
+              author={data.author}
+              bio="As is stated in my bio, I stream on Wednesdays and Sundays. My intention is to stream some gaming content but chat's often too damn gezellig so I end up Just Chatting 90% of the time... Oh well."
+              socials={socials}
+            />
           </div>
-          <div
-            className="relative list-none flex justify-center items-center bg-[#252525] py-1 min-h-10            
-            after:absolute  after:border-transparent after:border-l-[#252525] after:border-solid after:border-t-[40px] after:border-b-0 after:border-l-[12px]  after:left-full "
-          >
-            by {data.author}
+
+          {/* sep */}
+          <div className="mx-8">
+            <Separator orientation="vertical" className="h-full w-[2px]  transition-all bg-accent" />
           </div>
-          <div className="relative list-none flex justify-center items-center bg-[#252525] py-1 min-h-10            
-            after:absolute   after:border-transparent after:border-l-[#252525] after:border-solid after:border-t-[40px] after:border-b-0 after:border-l-[12px]  after:left-full ">
-            comments 3
+
+          {/* sidebar */}
+          <div className="flex flex-col items-center min-w-[350px] relative ">
+            <div className="mb-8 w-full px-5">
+              <Widget text="TOP ARTICLES" />
+            </div>
+            <div className="space-y-10 w-full mb-8 ">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <ArticleCard key={i} title="Use social media to jump-start your creative career." date="2021-12-12" number={i + 1} />
+              ))}
+            </div>
+
+            <div className="mb-8 w-full px-5">
+              <Widget text="CATEGORIES" />
+            </div>
           </div>
+
+          {/* end sidebar */}
         </div>
+      </div>
+      <div className="my-8 z-100">
+        <BlogSelector next_post={next_post[0]} prev_post={prev_post[0]} />
+      </div>
 
-        <RenderContent content={data.content as string} />
+      <div className="container my-12">
+        <BlogComments comments={[]} postId={data.id} />
       </div>
     </section>
   );

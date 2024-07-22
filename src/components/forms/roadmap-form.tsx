@@ -71,9 +71,19 @@ export default function RoadmapForm() {
   }, [form.watch()]);
 
   async function onSubmit(values: z.infer<typeof roadmapSchema>) {
+    const obj = {
+      ...values,
+      // check for empty strings
+      images: values.images.filter((image) => image !== ""),
+      content: values.content.length > 0 ? values.content : null,
+    
+    }
+
+
+
     if (roadmap_id) {
       // handle update
-      toast.promise(updateRoadmap(values, roadmap_id), {
+      toast.promise(updateRoadmap(obj, roadmap_id), {
         loading: "Updating Team Member...",
         success: "Roadmap",
         error(error) {
@@ -227,7 +237,7 @@ export default function RoadmapForm() {
 
         <div className="max-w-[1336px] rounded-lg border bg-background shadow">
           <PlateEditor
-            initialValue={JSON.parse(form.getValues("content"))}
+            initialValue={form.watch("content") ? JSON.parse(form.watch("content")) : null}
             onValueChange={(value) => form.setValue("content", JSON.stringify(value))}
           />
         </div>

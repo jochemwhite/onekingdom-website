@@ -17,12 +17,14 @@ const config = {
       fontFamily: {
         primary: ["var(--font-nunito)"],
         title: ["var(--font-assassin)"],
+        'blog-title': ["var(--font-heebo)"],
       },
 
       colors: {
         primary: "#111111",
         secondary: "#0A0A0A",
         accent: "#252525",
+        
 
         "text-primary": "#CCCCCC",
         "text-accent": "#78f701",
