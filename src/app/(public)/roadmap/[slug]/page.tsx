@@ -3,6 +3,7 @@ import BlogComments from "@/components/blog/blog-comments";
 import BlogSelector from "@/components/blog/blog-selector";
 import BreadCrumbs from "@/components/blog/breadcrumbs";
 import MiniItems from "@/components/blog/mini-items";
+import BasicButton from "@/components/buttons/basic-button";
 import ArticleCard from "@/components/cards/article-card";
 import AuthorCard from "@/components/cards/author-card";
 import SocialIcon from "@/components/globals/social-icon";
@@ -16,6 +17,7 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FaDiscord } from "react-icons/fa";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const session = await auth();
@@ -122,7 +124,30 @@ export default async function Page({ params }: { params: { slug: string } }) {
             </div>
 
             <div className="mb-8 w-full px-5">
-              <Widget text="CATEGORIES" />
+              <Widget text="SUBSCRIBE & FOLLOW" />
+            </div>
+
+            <div>
+              <ul className="flex items-center [&>li]:px-2 text-white">
+                {socials.map((social) => (
+                  <li key={social.name}>
+                    <Link href={social.link} target="_blank" className="hover:text-text-accent text-2xl">
+                      <SocialIcon value={social.name} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="my-8 w-full p-8 flex justify-center items-center bg-accent rounded-md">
+              <div className="flex flex-col justify-center items-center space-y-5">
+                <FaDiscord className="text-6xl text-white" />
+                <h4 className="text-2xl font-blog-title">Join Our Discord</h4>
+                <p className="text-center">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                </p>
+                <BasicButton innerText="Join Now"   href=""/>
+              </div>
             </div>
           </div>
 
