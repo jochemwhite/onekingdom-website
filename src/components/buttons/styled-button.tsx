@@ -36,7 +36,7 @@ export default function StyledButton({ href, innerText, openNewTab, icon }: Basi
         <span className="flex items-center">
           <SocialIcon value={icon} size={25} />
           <span
-            className={cn("block relative w-[2px] h-8 ml-5 bg-accent", {
+            className={cn("block relative w-[2px] h-8 ml-5 bg-primary", {
               "after:bg-highlight after-w-[2px] after:h-8 after:block after:animate-lineFromTopToBottom ": isHover,
               "after:bg-highlight after-w-[2px] after:h-8 after:hidden after:animate-lineFrombottomToBottomEnd": !isHover,
             })}
