@@ -8,8 +8,8 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About"
-}
+  title: "About",
+};
 
 export default function page() {
   return (
@@ -27,13 +27,18 @@ export default function page() {
             <div className="w-full md:w-1/2 space-y-6">
               <Title title="The Rise of One Kingdom" alignment="left" />
               <p className="text-zinc-400">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora quas exercitationem, earum veniam impedit nam expedita iure!
-                Blanditiis, facere. Nostrum veritatis ullam placeat facere repellendus, in officia eveniet impedit rerum.
+                It all started with a simple idea: one Discord, one goal. A group of streamers came together, not just to share their passion but to
+                build something bigger—something that could support, entertain, and inspire. And so, One Kingdom was born: a community where
+                creativity thrives, friendships form, and success is something we achieve together. <br /> <br />
+                We&quot;re not just about numbers or streams; we&quot;re about moments. The late-night brainstorming sessions, the &quot;just one more game&quot; spirals,
+                and the annual meetups where we trade pixels for real-life laughs—whether it&quot;s braving the wilds of the Efteling or lounging at the
+                beach with a volleyball and a bbq.
+                <br /> <br />
+                At our core, One Kingdom is a place where professionalism meets a warm, welcoming sense of togetherness. Here, streamers, gamers, and
+                creators unite to share ideas, support each other, and create content that truly stands out. We&quot;re on a mission to help every member
+                grow and to make the kind of content that gets people talking.
               </p>
-              <p className="text-zinc-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, reprehenderit. Amet aliquam exercitationem doloribus, fugit, dolorum
-                velit maxime adipisci architecto nisi, obcaecati natus corrupti aliquid nesciunt nulla iure nemo quo?
-              </p>
+
               <div className="flex gap-4">
                 <StyledButton href={discord_link} innerText="Discord" icon="discord" openNewTab={true} />
                 <StyledButton href="/contact" innerText="contact" />
@@ -69,12 +74,13 @@ export default function page() {
             <div className="w-full md:w-1/2 space-y-6">
               <Title title="The Rise of One Kingdom" alignment="left" />
               <p className="text-zinc-400">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora quas exercitationem, earum veniam impedit nam expedita iure!
-                Blanditiis, facere. Nostrum veritatis ullam placeat facere repellendus, in officia eveniet impedit rerum.
+                The dream? To become Europe&quot;s go-to community for streamers and content creators, a hub of talent and collaboration that supports its
+                members at every level. With 1,000 Discord members on the horizon, a growing social media presence, and partnerships that make a real
+                impact, we&quot;re building a future where creators can thrive.
               </p>
               <p className="text-zinc-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, reprehenderit. Amet aliquam exercitationem doloribus, fugit, dolorum
-                velit maxime adipisci architecto nisi, obcaecati natus corrupti aliquid nesciunt nulla iure nemo quo?
+                Whether you&quot;re here for the laughs, the advice, or the inspiration, welcome to One Kingdom. Together, we&quot;re creating something
+                unforgettable—one stream, one moment, one kingdom at a time.
               </p>
               <div className="flex gap-4">
                 <StyledButton href={discord_link} innerText="Discord" icon="discord" openNewTab={true} />
