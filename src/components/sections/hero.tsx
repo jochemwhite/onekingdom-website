@@ -1,3 +1,4 @@
+'use client'
 import { discord_link } from "@/lib/constant";
 import { YouTubeBackground } from "../YouTubeBackground";
 import StyledButton from "../buttons/styled-button";
