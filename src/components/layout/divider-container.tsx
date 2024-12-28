@@ -7,7 +7,7 @@ interface Props {
 export default function DividerContainer({ children }: Props) {
   return (
     <div className="relative">
-      <span className="fill-background-primary absolute inset-x-0 w-full top-0 h-auto block z-50 text-black">
+      <span className="fill-background-primary absolute inset-x-0 w-full top-0 h-auto block  text-black">
         <Divider />
       </span>
 
