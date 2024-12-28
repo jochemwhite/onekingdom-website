@@ -8,13 +8,10 @@ import { members, roadmap } from "@/lib/constant";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home"
-}
-
-
+  title: "Home",
+};
 
 export default async function Home() {
-
   return (
     <>
       {/* hero */}
@@ -34,20 +31,16 @@ export default async function Home() {
       </section>
 
       {/* Events */}
-      <section className="relative bg-[#0A0A0A] my-16">
+      <section className="relative bg-background-secondary mt-16">
         <DividerContainer>
           <div className="container py-32">
             <div className="mb-20">
-            <Title title="One Kingdom Roadmap" alignment="center" />
-          </div>
+              <Title title="One Kingdom Roadmap" alignment="center" />
+            </div>
 
             <EventTimeline events={roadmap} />
           </div>
         </DividerContainer>
-      </section>
-
-      <section>
-        <TeamSection team="staff" title="Staff" />
       </section>
     </>
   );
