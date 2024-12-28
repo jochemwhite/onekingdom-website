@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default async function Home() {
 
   return (
-    <main className="min-h-screen">
+    <>
       {/* hero */}
       <section>
         <Hero />
@@ -49,6 +49,6 @@ export default async function Home() {
       <section>
         <TeamSection team="staff" title="Staff" />
       </section>
-    </main>
+    </>
   );
 }
