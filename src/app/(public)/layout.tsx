@@ -10,7 +10,7 @@ export default function layout({ children }: Props) {
   return (
     <>
       <Header />
-      {children}
+      <main className="bg-background-primary">{children}</main>
       <Footer />
     </>
   );

@@ -27,7 +27,7 @@ const Header = () => {
     <Fragment>
       <header
         className={cn("fixed w-full z-50 top-0 left-0 py-5", {
-          "bg-primary shadow-md  ": fixer,
+          "bg-background-primary shadow-md  ": fixer,
         })}
       >
         <div className="container">
